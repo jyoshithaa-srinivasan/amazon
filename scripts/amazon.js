@@ -1,3 +1,7 @@
+//which variable u r getting from outside the file
+// .. basically represents the folder outside the current folder
+import {cart} from '../data/cart.js';
+import { products } from '../data/products.js';
 
 //generate html
 
@@ -46,7 +50,7 @@ products.forEach((product)=>{
 
                 <div class="product-spacer"></div>
 
-                <div class="added-to-cart">
+                <div class="added-to-cart js-added-to-cart-${product.id}">
                     <img src="images/icons/checkmark.png">
                     Added
                 </div>
@@ -62,13 +66,31 @@ products.forEach((product)=>{
 //dom
 document.querySelector('.js-products-grid').innerHTML=productsHTML;
 
+// We're going to use an object to save the timeout ids.
+// The reason we use an object is because each product
+// will have its own timeoutId. So an object lets us
+// save multiple timeout ids for different products.
+// For example:
+// {
+//   'product-id1': 2,
+//   'product-id2': 5,
+//   ...
+// }
+// (2 and 5 are ids that are returned when we call setTimeout).
+
+const addedMessageTimeouts = {};
+
+
 document.querySelectorAll('.js-add-to-cart')
     .forEach((button)=>{
         button.addEventListener('click',()=>{
-           const productId=button.dataset.productId;
+        //    const productId=button.dataset.productId;
+            const {productId}=button.dataset;
            //note we have used diff case in rhs than what we have defined in above html
 
-           let AddQuantity=Number(document.querySelector(`.js-quantity-selector-${productId}`).value)||1;
+           
+
+           let AddQuantity=Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
            //converting to number since Dom values are strings by default
 
 
@@ -81,19 +103,21 @@ document.querySelectorAll('.js-add-to-cart')
                 matchingItem=item;
 
             }
+            
            });
-
            if(matchingItem){
-            matchingItem.quantity += AddQuantity;
+                 matchingItem.quantity+=AddQuantity;
            }
-
            else{
             cart.push({
                 productId:productId,
                 quantity:AddQuantity
+                // productId,
+                // quantity
                });
 
            }
+
 
            let cartQuantity=0;
 
@@ -103,10 +127,28 @@ document.querySelectorAll('.js-add-to-cart')
            });
 
            document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
-           console.log(cart);
+
+           const addedMessage=document.querySelector(`.js-added-to-cart-${productId}`);
+           addedMessage.classList.add('added-to-cart-visible');
+
+
+           const previousTimeoutId=addedMessageTimeouts[productId];
+           if(previousTimeoutId){
+               clearTimeout(previousTimeoutId);
+           }
+           const timeoutId=setTimeout(()=>{
+               addedMessage.classList.remove('added-to-cart-visible');
+           },2000);
+   
+           //save the timeoutId for this product
+           //so we can stop it later if we need to .
+   
+           addedMessageTimeouts[productId]=timeoutId;
 
            
         });
+
+        
 
 
 
