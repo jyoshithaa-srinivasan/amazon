@@ -80,8 +80,6 @@ document.querySelector('.js-products-grid').innerHTML=productsHTML;
 
 const addedMessageTimeouts = {};
 
-
-
 function updateCartQuantity(productId){
     let cartQuantity=0;
 
