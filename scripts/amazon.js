@@ -1,6 +1,6 @@
 //which variable u r getting from outside the file
 // .. basically represents the folder outside the current folder
-import {cart} from '../data/cart.js';
+import {cart,addToCart} from '../data/cart.js';
 import { products } from '../data/products.js';
 
 //generate html
@@ -81,49 +81,13 @@ document.querySelector('.js-products-grid').innerHTML=productsHTML;
 const addedMessageTimeouts = {};
 
 
-document.querySelectorAll('.js-add-to-cart')
-    .forEach((button)=>{
-        button.addEventListener('click',()=>{
-        //    const productId=button.dataset.productId;
-            const {productId}=button.dataset;
-           //note we have used diff case in rhs than what we have defined in above html
 
-           
+function updateCartQuantity(productId){
+    let cartQuantity=0;
 
-           let AddQuantity=Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
-           //converting to number since Dom values are strings by default
+           cart.forEach((cartItem)=>{
 
-
-           //initially will be undefined 
-           let matchingItem;
-
-           //checking if already is in cart 
-           cart.forEach((item)=>{
-            if(productId===item.productId){
-                matchingItem=item;
-
-            }
-            
-           });
-           if(matchingItem){
-                 matchingItem.quantity+=AddQuantity;
-           }
-           else{
-            cart.push({
-                productId:productId,
-                quantity:AddQuantity
-                // productId,
-                // quantity
-               });
-
-           }
-
-
-           let cartQuantity=0;
-
-           cart.forEach((item)=>{
-
-                cartQuantity+=item.quantity;
+                cartQuantity+=cartItem.quantity;
            });
 
            document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
@@ -145,12 +109,19 @@ document.querySelectorAll('.js-add-to-cart')
    
            addedMessageTimeouts[productId]=timeoutId;
 
+}
+
+
+document.querySelectorAll('.js-add-to-cart')
+    .forEach((button)=>{
+        button.addEventListener('click',()=>{
+        //    const productId=button.dataset.productId;
+            const {productId}=button.dataset;
+           //note we have used diff case in rhs than what we have defined in above html
+           addToCart(productId);
+           updateCartQuantity(productId);
            
         });
-
-        
-
-
 
     });
 
