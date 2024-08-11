@@ -30,7 +30,7 @@ products.forEach((product)=>{
                 </div>
 
                 <div class="product-quantity-container">
-                    <select>
+                    <select class="js-quantity-selector-${product.id}">
                     <option selected value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -68,6 +68,10 @@ document.querySelectorAll('.js-add-to-cart')
            const productId=button.dataset.productId;
            //note we have used diff case in rhs than what we have defined in above html
 
+           let AddQuantity=Number(document.querySelector(`.js-quantity-selector-${productId}`).value)||1;
+           //converting to number since Dom values are strings by default
+
+
            //initially will be undefined 
            let matchingItem;
 
@@ -80,13 +84,13 @@ document.querySelectorAll('.js-add-to-cart')
            });
 
            if(matchingItem){
-            matchingItem.quantity += 1;
+            matchingItem.quantity += AddQuantity;
            }
 
            else{
             cart.push({
                 productId:productId,
-                quantity:1
+                quantity:AddQuantity
                });
 
            }
@@ -99,6 +103,7 @@ document.querySelectorAll('.js-add-to-cart')
            });
 
            document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
+           console.log(cart);
 
            
         });
@@ -106,5 +111,6 @@ document.querySelectorAll('.js-add-to-cart')
 
 
     });
+
 
 
