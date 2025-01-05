@@ -4,8 +4,13 @@ import { formatCurrency } from './utils/money.js';
 //. means current folder--> so will be present at scripts folder
 //.. means folder outside the current folder----> will be present at main folder
 
-let cartSummaryHTML='';
+hello();
 
+const today=dayjs();
+const deliveryDate=today.add(7,'days');
+deliveryDate.format('dddd, MMMM D');
+
+let cartSummaryHTML='';
 
 cart.forEach((cartItem)=>{
     const productId=cartItem.productId;
