@@ -14,7 +14,8 @@ const today=dayjs();
 const deliveryDate=today.add(7,'days');
 console.log(deliveryDate.format('dddd, MMMM D'));
 
-let cartSummaryHTML='';
+function renderOrderSummary(){
+  let cartSummaryHTML='';
 
 cart.forEach((cartItem)=>{
     const productId=cartItem.productId;
@@ -177,6 +178,7 @@ document.querySelectorAll('.js-delivery-option')
 
       const {productId,deliveryOptionId}=element.dataset;
       updateDeliveryOption(productId,deliveryOptionId);
+      renderOrderSummary();
 
     })
   });
@@ -237,6 +239,11 @@ document.querySelectorAll('.js-save-quantity-link')
   });
 
 updateCartQuantity();
+
+
+}
+
+renderOrderSummary();
 
 
 
