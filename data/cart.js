@@ -105,4 +105,27 @@ export function updateQuantity(productId,newQuantity){
 
 }
 
+export function updateDeliveryOption(productId,deliveryOptionId){
+
+    // finds the product in cart that needs to be updated with deliveryoptionid
+    // saves that product's id in matching item
+
+     //initially will be undefined 
+     let matchingItem;
+
+     //checking if already is in cart 
+     cart.forEach((cartItem)=>{
+      if(productId===cartItem.productId){
+          matchingItem=cartItem;
+
+      }
+      
+     });
+
+     //update the deliveryOptionId property
+     matchingItem.deliveryOptionId=deliveryOptionId;
+     saveToStorage();
+
+}
+
     
