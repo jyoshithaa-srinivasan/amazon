@@ -4,7 +4,12 @@
 
 //  instead of default value , get the values from localstorage
 
-export let cart=JSON.parse(localStorage.getItem('cart'));
+export let cart;
+
+loadFromStorage();
+
+export function loadFromStorage(){
+    JSON.parse(localStorage.getItem('cart'));
 
 if(!cart){
 
@@ -20,6 +25,8 @@ if(!cart){
     deliveryOptionId:'2'
 
 }];
+
+}
 
 }
 
